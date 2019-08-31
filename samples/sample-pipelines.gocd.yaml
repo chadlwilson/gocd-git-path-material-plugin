@@ -17,6 +17,7 @@ pipelines:
                 - script: ./run.sh action
   action-movies2:
     group: movies
+    approval: manual
     materials:
       action:
         plugin_configuration:
