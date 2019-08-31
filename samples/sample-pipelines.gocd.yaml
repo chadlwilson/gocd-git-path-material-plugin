@@ -7,7 +7,7 @@ pipelines:
           id: GitPathMaterial
           version: 2.0.0-alpha1
         options:
-          url: https://github.com/TWChennai/gocd-git-path-sample
+          url: git@github.com:TWChennai/gocd-git-path-sample.git
           path: action
     stages:
       - build:
@@ -27,7 +27,7 @@ pipelines:
           id: GitPathMaterial
           version: 2.0.0-alpha1
         options:
-          url: https://github.com/TWChennai/gocd-git-path-sample
+          url: git@github.com:TWChennai/gocd-git-path-sample.git
           path: animation
     stages:
       - build:
