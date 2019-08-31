@@ -14,11 +14,23 @@ pipelines:
           jobs:
             build:
               tasks:
-                - exec:
-                    command: "/bin/bash"
-                    arguments:
-                      - "-c"
-                      - "./run.sh action"
+                - script: ./run.sh action
+  action-movies2:
+    group: movies
+    materials:
+      action:
+        plugin_configuration:
+          id: GitPathMaterial
+          version: 2.0.0-alpha1
+        options:
+          url: https://github.com/TWChennai/gocd-git-path-sample
+          path: action
+    stages:
+      - build:
+          jobs:
+            build:
+              tasks:
+                - script: ./run.sh action
   animation-movies:
     group: movies
     materials:
@@ -34,8 +46,22 @@ pipelines:
           jobs:
             build:
               tasks:
-                - exec:
-                    command: "/bin/bash"
-                    arguments:
-                      - "-c"
-                      - "./run.sh animation"
+                - script: ./run.sh animation
+  both:
+    group: movies
+    materials:
+      action:
+        pipeline: action-movies
+        stage: build
+      action2:
+        pipeline: action-movies2
+        stage: build
+      animation:
+        pipeline: animation-movies
+        stage: build
+    stages:
+      - build:
+          jobs:
+            build:
+              tasks:
+                - script: echo "Run OK"
