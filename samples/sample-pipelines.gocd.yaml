@@ -2,7 +2,7 @@ pipelines:
   action-movies:
     group: movies
     materials:
-      sample:
+      action:
         plugin_configuration:
           id: GitPathMaterial
           version: 2.0.0-alpha1
@@ -22,7 +22,7 @@ pipelines:
   animation-movies:
     group: movies
     materials:
-      sample:
+      animation:
         plugin_configuration:
           id: GitPathMaterial
           version: 2.0.0-alpha1
