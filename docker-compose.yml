@@ -19,9 +19,8 @@ services:
       GOCD_PLUGIN_INSTALL_script-executor-task:
         https://github.com/gocd-contrib/script-executor-task/releases/download/0.3/script-executor-0.3.0.jar
       GOCD_PLUGIN_INSTALL_gocd-git-path-material-plugin:
-        http://plugin-server/gocd-git-path-material-plugin-$VERSION.jar
+        http://plugin-server/gocd-git-path-material-plugin-${version}.jar
     volumes:
-      - ./build/libs/gocd-git-path-material-plugin-$VERSION.jar:/plugins/external/gocd-git-path-material-plugin.jar
       - ~/.ssh:/var/go/.ssh
     ports:
       - 8153:8153
