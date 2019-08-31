@@ -1,0 +1,41 @@
+pipelines:
+  action-movies:
+    group: movies
+    materials:
+      sample:
+        plugin_configuration:
+          id: GitPathMaterial
+          version: 2.0.0-alpha1
+        options:
+          url: https://github.com/TWChennai/gocd-git-path-sample
+          path: action
+    stages:
+      - build:
+          jobs:
+            build:
+              tasks:
+                - exec:
+                    command: "/bin/bash"
+                    arguments:
+                      - "-c"
+                      - "./run.sh action"
+  animation-movies:
+    group: movies
+    materials:
+      sample:
+        plugin_configuration:
+          id: GitPathMaterial
+          version: 2.0.0-alpha1
+        options:
+          url: https://github.com/TWChennai/gocd-git-path-sample
+          path: animation
+    stages:
+      - build:
+          jobs:
+            build:
+              tasks:
+                - exec:
+                    command: "/bin/bash"
+                    arguments:
+                      - "-c"
+                      - "./run.sh animation"
