@@ -60,6 +60,12 @@ pipelines:
       animation:
         pipeline: animation-movies
         stage: build
+      integration:
+        plugin_configuration:
+          id: GitPathMaterial
+        options:
+          url: https://github.com/chadlwilson/gocd-git-path-sample.git
+          path: integration
     stages:
       - build:
           jobs:
