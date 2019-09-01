@@ -2,7 +2,7 @@
 <go-plugin id="git-path" version="1">
     <about>
         <name>Git Path Material Plugin</name>
-        <version>2.0.0-alpha1</version>
+        <version>2.0.0-alpha2</version>
         <target-go-version>19.7.0</target-go-version>
         <description>Plugin that polls a Git repository and triggers pipeline based on the sub-directory</description>
         <vendor>
