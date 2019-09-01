@@ -1,5 +1,7 @@
-package com.thoughtworks.go.scm.plugin.jgit;
+package com.thoughtworks.go.scm.plugin.git;
 
+import com.thoughtworks.go.scm.plugin.cmd.InMemoryConsumer;
+import com.thoughtworks.go.scm.plugin.cmd.ProcessOutputStreamConsumer;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
 import org.apache.commons.io.FileUtils;
@@ -11,13 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class GitHelper {
-
     protected GitConfig gitConfig;
     protected File workingDir;
+    protected ProcessOutputStreamConsumer stdOut;
+    protected ProcessOutputStreamConsumer stdErr;
 
     public GitHelper(GitConfig gitConfig, File workingDir) {
+       this(gitConfig, workingDir, new ProcessOutputStreamConsumer(new InMemoryConsumer()), new ProcessOutputStreamConsumer(new InMemoryConsumer()));
+    }
+
+    public GitHelper(GitConfig gitConfig, File workingDir, ProcessOutputStreamConsumer stdOut, ProcessOutputStreamConsumer stdErr) {
         this.gitConfig = gitConfig;
         this.workingDir = workingDir;
+        this.stdOut = stdOut;
+        this.stdErr = stdErr;
     }
 
     public abstract String version();
@@ -43,7 +52,11 @@ public abstract class GitHelper {
     }
 
     public boolean isSameRepository() {
-        return workingRepositoryUrl().equals(gitConfig.getEffectiveUrl());
+        try {
+            return workingRepositoryUrl().equals(gitConfig.getEffectiveUrl());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void setupWorkingDir() {
@@ -92,14 +105,16 @@ public abstract class GitHelper {
     public abstract void resetHard(String revision);
 
     public void fetchAndResetToHead(String refSpec) {
-        fetchAndReset("origin/" + gitConfig.getEffectiveBranch(), refSpec);
+        fetchAndReset(refSpec, gitConfig.getRemoteBranch());
     }
 
-    public void fetchAndReset(String revision, String refSpec) {
+    public void fetchAndReset(String refSpec, String revision) {
+        stdOut.consumeLine(String.format("[GIT] Fetch and reset in working directory %s", workingDir));
         cleanAllUnversionedFiles();
         if (isSubmoduleEnabled()) {
             removeSubmoduleSectionsFromGitConfig();
         }
+        checkoutRemoteBranchToLocal();
         fetch(refSpec);
         resetHard(revision);
         if (isSubmoduleEnabled()) {
@@ -128,12 +143,15 @@ public abstract class GitHelper {
     public abstract int getSubModuleCommitCount(String subModuleFolder);
 
     public void updateSubmoduleWithInit() {
+        stdOut.consumeLine("[GIT] Updating git sub-modules");
+
         submoduleInit();
 
         submoduleSync();
 
         submoduleUpdate();
 
+        stdOut.consumeLine("[GIT] Cleaning unversioned files and sub-modules");
         printSubmoduleStatus();
     }
 
@@ -160,5 +178,4 @@ public abstract class GitHelper {
     public abstract void changeSubmoduleUrl(String submoduleName, String newUrl);
 
     public abstract void push();
-
 }

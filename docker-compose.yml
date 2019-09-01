@@ -8,8 +8,6 @@ services:
     environment:
       GO_SERVER_URL: http://server:8153/go
       AGENT_KEY: 079e578b-87cc-46c9-9ab5-88997fc7ac59
-    volumes:
-      - ~/.ssh:/var/go/.ssh
 
   server:
     image: gocd/gocd-server:v19.7.0
@@ -20,8 +18,6 @@ services:
         https://github.com/gocd-contrib/script-executor-task/releases/download/0.3/script-executor-0.3.0.jar
       GOCD_PLUGIN_INSTALL_gocd-git-path-material-plugin:
         http://plugin-server/gocd-git-path-material-plugin-${VERSION}.jar
-    volumes:
-      - ~/.ssh:/var/go/.ssh
     ports:
       - 8153:8153
       - 8154:8154
@@ -29,6 +25,6 @@ services:
   plugin-server:
     image: nginx
     volumes:
-      - ./build/libs/:/usr/share/nginx/html:ro
+      - ./build/libs/:/usr/share/nginx/html:cached
     ports:
-      - 80:80
+      - 80

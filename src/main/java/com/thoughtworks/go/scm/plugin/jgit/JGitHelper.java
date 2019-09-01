@@ -1,5 +1,7 @@
 package com.thoughtworks.go.scm.plugin.jgit;
 
+import com.thoughtworks.go.scm.plugin.cmd.ProcessOutputStreamConsumer;
+import com.thoughtworks.go.scm.plugin.git.GitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.ModifiedFile;
 import com.thoughtworks.go.scm.plugin.model.Revision;
@@ -28,8 +30,12 @@ import java.util.*;
 
 public class JGitHelper extends GitHelper {
 
-    private JGitHelper(GitConfig gitConfig, File workingDir) {
+    public JGitHelper(GitConfig gitConfig, File workingDir) {
         super(gitConfig, workingDir);
+    }
+
+    public JGitHelper(GitConfig gitConfig, File workingDir, ProcessOutputStreamConsumer stdOut, ProcessOutputStreamConsumer stdErr) {
+        super(gitConfig, workingDir, stdOut, stdErr);
     }
 
     public static JGitHelper create(GitConfig gitConfig, String destinationFolder) {

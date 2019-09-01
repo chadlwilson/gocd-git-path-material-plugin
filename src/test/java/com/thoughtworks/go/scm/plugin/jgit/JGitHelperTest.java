@@ -1,5 +1,6 @@
 package com.thoughtworks.go.scm.plugin.jgit;
 
+import com.thoughtworks.go.scm.plugin.git.GitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
 import org.apache.commons.io.FileUtils;
@@ -64,7 +65,7 @@ public class JGitHelperTest {
 
     @Test
     public void shouldGetLatestRevisionForGivenPath() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
 
@@ -78,7 +79,7 @@ public class JGitHelperTest {
 
     @Test
     public void shouldGetLatestRevisionForGivenCommaSeparatedPath() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
 
@@ -114,7 +115,7 @@ public class JGitHelperTest {
 
     @Test
     public void shouldGetRevisionsSinceForGivenPath() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
         RevCommit service1Commit = addContentAndCommit(getFilePath(service1), "Service 1 commit");
@@ -133,7 +134,7 @@ public class JGitHelperTest {
 
     @Test
     public void shouldGetRevisionsSinceForCommaSeparatedGivenPath() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
         RevCommit service1Commit = addContentAndCommit(getFilePath(service1), "Service 1 commit");

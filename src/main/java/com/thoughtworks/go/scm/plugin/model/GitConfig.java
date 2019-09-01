@@ -18,8 +18,8 @@ public class GitConfig {
     private String username;
     private String password;
     private String branch;
-
-    private boolean recursiveSubModuleUpdate = true;
+    private boolean recursiveSubModuleUpdate;
+    private boolean shallowClone;
 
     public static GitConfig create(GoPluginApiRequest apiRequest) {
         Map<String, String> configuration = JsonUtils.parseScmConfiguration(apiRequest);
@@ -27,15 +27,16 @@ public class GitConfig {
     }
 
     public GitConfig(String url, String username, String password, String branch) {
-        this(url, username, password, branch, true);
+        this(url, username, password, branch, true, false);
     }
 
-    private GitConfig(String url, String username, String password, String branch, boolean recursiveSubModuleUpdate) {
+    private GitConfig(String url, String username, String password, String branch, boolean recursiveSubModuleUpdate, boolean shallowClone) {
         this.url = url;
         this.username = username;
         this.password = password;
         this.branch = branch;
         this.recursiveSubModuleUpdate = recursiveSubModuleUpdate;
+        this.shallowClone = shallowClone;
     }
 
     public boolean isRemoteUrl() {
@@ -51,6 +52,10 @@ public class GitConfig {
             return getUrlWithCredentials();
         }
         return getUrl();
+    }
+
+    public String getRemoteBranch() {
+        return String.format("origin/%s", getEffectiveBranch());
     }
 
     public String getEffectiveBranch() {

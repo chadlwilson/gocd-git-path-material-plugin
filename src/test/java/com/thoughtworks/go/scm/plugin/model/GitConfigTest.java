@@ -8,7 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,12 +23,12 @@ public class GitConfigTest {
 
     @Test
     public void shouldCreateGitConfig() {
-        HashMap<String, String> scmConfiguration = new HashMap<String, String>() {{
-            put("url", "http://url.test");
-            put("username", "user");
-            put("password", "pass");
-            put("branch", "master");
-        }};
+        Map<String, String> scmConfiguration = Map.of(
+            "url", "http://url.test",
+            "username", "user",
+            "password", "pass",
+            "branch", "master"
+        );
 
         PowerMockito.mockStatic(JsonUtils.class);
         GoPluginApiRequest pluginApiRequest = mock(GoPluginApiRequest.class);

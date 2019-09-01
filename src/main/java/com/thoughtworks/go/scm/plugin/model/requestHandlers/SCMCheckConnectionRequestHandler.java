@@ -1,14 +1,14 @@
 package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 
-import com.thoughtworks.go.scm.plugin.jgit.GitHelper;
-import com.thoughtworks.go.scm.plugin.jgit.JGitHelper;
+import com.thoughtworks.go.plugin.api.logging.Logger;
+import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
+import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.thoughtworks.go.scm.plugin.git.GitHelper;
+import com.thoughtworks.go.scm.plugin.git.HelperFactory;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;
 import com.thoughtworks.go.scm.plugin.util.StringUtils;
 import com.thoughtworks.go.scm.plugin.util.Validator;
-import com.thoughtworks.go.plugin.api.logging.Logger;
-import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
-import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class SCMCheckConnectionRequestHandler implements RequestHandler {
                     response.put("status", "failure");
                     messages.add("Could not find Git repository");
                 } else {
-                    GitHelper gitHelper = JGitHelper.create(gitConfig, null);
+                    GitHelper gitHelper = HelperFactory.git(gitConfig, null);
                     gitHelper.checkConnection();
                 }
             } else {
@@ -57,7 +57,7 @@ public class SCMCheckConnectionRequestHandler implements RequestHandler {
                     messages.add("Invalid URL format. Should match "+Validator.GIT_URL_REGEX);
                 } else {
                     try {
-                        GitHelper gitHelper = JGitHelper.create(gitConfig, null);
+                        GitHelper gitHelper = HelperFactory.git(gitConfig, null);
                         gitHelper.checkConnection();
                     } catch (Exception e) {
                         response.put("status", "failure");

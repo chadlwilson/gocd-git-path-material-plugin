@@ -3,11 +3,12 @@ package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import com.thoughtworks.go.scm.plugin.jgit.GitHelper;
-import com.thoughtworks.go.scm.plugin.jgit.JGitHelper;
+import com.thoughtworks.go.scm.plugin.git.GitHelper;
+import com.thoughtworks.go.scm.plugin.git.HelperFactory;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class CheckoutRequestHandler implements RequestHandler {
         LOGGER.debug(String.format("destination: %s , commit: %s", destinationFolder, revision));
 
         try {
-            GitHelper git = JGitHelper.create(gitConfig, destinationFolder);
+            GitHelper git = HelperFactory.git(gitConfig, new File(destinationFolder));
             git.cloneOrFetch();
             git.resetHard(revision);
 

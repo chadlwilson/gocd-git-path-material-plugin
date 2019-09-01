@@ -2,11 +2,13 @@ package com.thoughtworks.go.scm.plugin.model;
 
 import com.thoughtworks.go.scm.plugin.util.ListUtils;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Getter
+@Setter
 public class Revision {
     private String revision;
     private Date timestamp;
@@ -14,6 +16,7 @@ public class Revision {
     private String user;
     private String emailId;
     private List<ModifiedFile> modifiedFiles;
+    private boolean isMergeCommit;
 
     private static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -23,11 +26,11 @@ public class Revision {
         this.comment = comment;
         this.user = user;
         this.emailId = emailId;
-        this.modifiedFiles = modifiedFiles;
+        this.modifiedFiles = modifiedFiles == null ? new ArrayList<>() : modifiedFiles;
     }
 
     public Revision(String revision, Date date, String comments, String user, String email) {
-        this(revision, date, comments, user, email, new ArrayList<ModifiedFile>());
+        this(revision, date, comments, user, email, null);
     }
 
     public final ModifiedFile createModifiedFile(String filename, String action) {
