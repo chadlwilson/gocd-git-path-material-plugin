@@ -5,7 +5,6 @@ pipelines:
       action:
         plugin_configuration:
           id: GitPathMaterial
-          version: 2.0.0-alpha1
         options:
           url: https://github.com/chadlwilson/gocd-git-path-sample.git
           path: action
@@ -21,7 +20,6 @@ pipelines:
       action:
         plugin_configuration:
           id: GitPathMaterial
-          version: 2.0.0-alpha1
         options:
           url: https://github.com/chadlwilson/gocd-git-path-sample.git
           path: action
@@ -38,7 +36,6 @@ pipelines:
       animation:
         plugin_configuration:
           id: GitPathMaterial
-          version: 2.0.0-alpha1
         options:
           url: https://github.com/chadlwilson/gocd-git-path-sample.git
           path: animation
