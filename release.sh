@@ -34,6 +34,11 @@ case "$1" in
       --tag ${VERSION} \
       --name "gocd-git-path-material-plugin-$VERSION.jar" \
       --file build/libs/gocd-git-path-material-plugin-${VERSION}.jar;;
+  delete)
+    ${GIT_HUB_RELEASE_BIN} delete \
+      --user chadlwilson \
+      --repo gocd-git-path-material-plugin \
+      --tag ${VERSION};;
   *)
-    echo "usage release.sh release | upload"
+    echo "usage release.sh release | upload | delete"
 esac
