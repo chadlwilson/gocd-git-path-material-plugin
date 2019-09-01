@@ -4,7 +4,7 @@ pipelines:
     materials:
       action:
         plugin_configuration:
-          id: GitPathMaterial
+          id: git-path
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: action
@@ -19,7 +19,7 @@ pipelines:
     materials:
       action:
         plugin_configuration:
-          id: GitPathMaterial
+          id: git-path
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: action
@@ -35,7 +35,7 @@ pipelines:
     materials:
       animation:
         plugin_configuration:
-          id: GitPathMaterial
+          id: git-path
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: animation
@@ -78,7 +78,7 @@ pipelines:
         stage: build
       integration:
         plugin_configuration:
-          id: GitPathMaterial
+          id: git-path
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: integration
