@@ -6,7 +6,7 @@ pipelines:
         plugin_configuration:
           id: GitPathMaterial
         options:
-          url: git@github.com:chadlwilson/gocd-git-path-material-plugin.git
+          url: https://github.com/chadlwilson/gocd-git-path-sample.git
           path: action
     stages:
       - build:
@@ -21,7 +21,7 @@ pipelines:
         plugin_configuration:
           id: GitPathMaterial
         options:
-          url: git@github.com:chadlwilson/gocd-git-path-material-plugin.git
+          url: https://github.com/chadlwilson/gocd-git-path-sample.git
           path: action
     stages:
       - build:
