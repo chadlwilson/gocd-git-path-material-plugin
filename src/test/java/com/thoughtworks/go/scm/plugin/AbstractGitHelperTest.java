@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -226,7 +227,7 @@ public abstract class AbstractGitHelperTest {
         GitHelper git = getHelper(null, testRepository);
         git.init();
         File file = new File(testRepository, "a.txt");
-        FileUtils.writeStringToFile(file, "content");
+        FileUtils.writeStringToFile(file, "content", StandardCharsets.UTF_8);
         git.add(file);
         git.commit("comment");
 
