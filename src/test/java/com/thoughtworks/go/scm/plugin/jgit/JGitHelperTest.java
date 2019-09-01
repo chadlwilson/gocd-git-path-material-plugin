@@ -8,7 +8,7 @@ import org.eclipse.jgit.lib.ConfigConstants;
 import java.io.File;
 
 
-public class JGitHelperTest2 extends AbstractGitHelperTest {
+public class JGitHelperTest extends AbstractGitHelperTest {
     @Override
     protected GitHelper getHelper(GitConfig gitConfig, File workingDir) {
         final JGitHelper helper = new JGitHelper(gitConfig, workingDir);
