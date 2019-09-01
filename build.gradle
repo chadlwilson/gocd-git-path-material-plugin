@@ -42,7 +42,6 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'commons-io:commons-io:2.6'
-    implementation 'commons-validator:commons-validator:1.6'
     implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     implementation 'org.eclipse.jgit:org.eclipse.jgit:5.4.2.201908231537-r'
     implementation 'joda-time:joda-time:2.10.3'
