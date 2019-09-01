@@ -18,9 +18,9 @@ public class HelperFactory {
 
     public static GitHelper git(GitConfig gitConfig, File workingDirectory, ProcessOutputStreamConsumer stdOut, ProcessOutputStreamConsumer stdErr) {
         if (determineType() == HelperType.CMD) {
-            return gitCmd(gitConfig, workingDirectory, stdOut, stdErr);
+            return new GitCmdHelper(gitConfig, workingDirectory, stdOut, stdErr);
         } else {
-            return jGit(gitConfig, workingDirectory, stdOut, stdErr);
+            return new JGitHelper(gitConfig, workingDirectory, stdOut, stdErr);
         }
     }
 
@@ -47,22 +47,4 @@ public class HelperFactory {
         return helperType;
     }
 
-    private static GitHelper gitCmd(GitConfig gitConfig, File workingDirectory, ProcessOutputStreamConsumer stdOut, ProcessOutputStreamConsumer stdErr) {
-        return new GitCmdHelper(gitConfig, workingDirectory, stdOut, stdErr);
-    }
-
-    private static GitHelper jGit(GitConfig gitConfig, File workingDirectory, ProcessOutputStreamConsumer stdOut, ProcessOutputStreamConsumer stdErr) {
-        return new JGitHelper(gitConfig, workingDirectory, stdOut, stdErr);
-    }
-
-    private static HelperType chooseHelperType() {
-        try {
-            // make sure git is available
-            LOGGER.info("Command line git found [{}]", new GitCmdHelper(null, null).version());
-            return HelperType.CMD;
-        } catch (Exception e) {
-            LOGGER.info("No command line git found; will continue with JGit [{}]", e.toString());
-        }
-        return HelperType.JGIT;
-    }
 }

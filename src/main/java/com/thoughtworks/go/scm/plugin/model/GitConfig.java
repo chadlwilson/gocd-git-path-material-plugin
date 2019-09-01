@@ -18,7 +18,7 @@ public class GitConfig {
     private String username;
     private String password;
     private String branch;
-    private boolean recursiveSubModuleUpdate;
+    private boolean recursiveSubModuleUpdate = true;
     private boolean shallowClone;
 
     public static GitConfig create(GoPluginApiRequest apiRequest) {
@@ -26,11 +26,16 @@ public class GitConfig {
         return new GitConfig(configuration.get("url"), configuration.get("username"), configuration.get("password"), configuration.get("branch"));
     }
 
+    public GitConfig(String url) {
+        this.url = url;
+    }
+
+
     public GitConfig(String url, String username, String password, String branch) {
         this(url, username, password, branch, true, false);
     }
 
-    private GitConfig(String url, String username, String password, String branch, boolean recursiveSubModuleUpdate, boolean shallowClone) {
+    public GitConfig(String url, String username, String password, String branch, boolean recursiveSubModuleUpdate, boolean shallowClone) {
         this.url = url;
         this.username = username;
         this.password = password;

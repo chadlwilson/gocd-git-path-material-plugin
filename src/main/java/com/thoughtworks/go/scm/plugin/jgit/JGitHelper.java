@@ -27,8 +27,11 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class JGitHelper extends GitHelper {
+
+    private Consumer<StoredConfig> repoConfigConsumer = config -> {};
 
     public JGitHelper(GitConfig gitConfig, File workingDir) {
         super(gitConfig, workingDir);
@@ -615,7 +618,7 @@ public class JGitHelper extends GitHelper {
         Repository submoduleRepository = null;
         try {
             submoduleRepository = walk.getRepository();
-            CheckoutCommand checkout = Git.wrap(submoduleRepository).checkout();
+            CheckoutCommand checkout = Git.wrap(submoduleRepository).checkout().setForceRefUpdate(true).setName("HEAD");
             checkout.call();
         } catch (Exception e) {
             throw new RuntimeException("sub-module checkout failed", e);
@@ -692,8 +695,11 @@ public class JGitHelper extends GitHelper {
                 modifiedFiles.add(new ModifiedFile(diffEntry.getNewPath(), getAction(diffEntry.getChangeType().name())));
             }
         }
+        boolean isMergeCommit = commit.getParentCount() > 1;
 
-        return new Revision(commitSHA, commitTime, comment, user, emailId, modifiedFiles);
+        Revision revision = new Revision(commitSHA, commitTime, comment, user, emailId, modifiedFiles);
+        revision.setMergeCommit(isMergeCommit);
+        return revision;
     }
 
     private String getAction(String gitAction) {
@@ -710,7 +716,15 @@ public class JGitHelper extends GitHelper {
     }
 
     private Repository getRepository(File folder) throws IOException {
-        return new FileRepositoryBuilder().setGitDir(getGitDir(folder)).readEnvironment().findGitDir().build();
+        final Repository repository = new FileRepositoryBuilder()
+                .setGitDir(getGitDir(folder))
+                .readEnvironment()
+                .findGitDir()
+                .build();
+
+        repoConfigConsumer.accept(repository.getConfig());
+
+        return repository;
     }
 
     private File getGitDir(File folder) {
@@ -721,5 +735,9 @@ public class JGitHelper extends GitHelper {
         if (gitConfig.isRemoteUrl() && gitConfig.hasCredentials()) {
             command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitConfig.getUsername(), gitConfig.getPassword()));
         }
+    }
+
+    public void setRepoConfigConsumer(Consumer<StoredConfig> repoConfigConsumer) {
+        if (repoConfigConsumer != null) this.repoConfigConsumer = repoConfigConsumer;
     }
 }
