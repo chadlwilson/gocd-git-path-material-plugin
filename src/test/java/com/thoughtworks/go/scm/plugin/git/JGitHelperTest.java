@@ -1,7 +1,5 @@
-package com.thoughtworks.go.scm.plugin.jgit;
+package com.thoughtworks.go.scm.plugin.git;
 
-import com.thoughtworks.go.scm.plugin.AbstractGitHelperTest;
-import com.thoughtworks.go.scm.plugin.git.GitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import org.eclipse.jgit.lib.ConfigConstants;
 

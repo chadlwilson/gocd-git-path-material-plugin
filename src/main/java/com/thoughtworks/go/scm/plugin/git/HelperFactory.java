@@ -4,7 +4,6 @@ package com.thoughtworks.go.scm.plugin.git;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.scm.plugin.cmd.InMemoryConsumer;
 import com.thoughtworks.go.scm.plugin.cmd.ProcessOutputStreamConsumer;
-import com.thoughtworks.go.scm.plugin.jgit.JGitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 
 import java.io.File;

@@ -1,6 +1,5 @@
 package com.thoughtworks.go.scm.plugin.git;
 
-import com.thoughtworks.go.scm.plugin.AbstractGitHelperTest;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
 import org.apache.commons.lang3.tuple.ImmutablePair;

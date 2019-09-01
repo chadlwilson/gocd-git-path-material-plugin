@@ -1,7 +1,6 @@
-package com.thoughtworks.go.scm.plugin.jgit;
+package com.thoughtworks.go.scm.plugin.git;
 
 import com.thoughtworks.go.scm.plugin.cmd.ProcessOutputStreamConsumer;
-import com.thoughtworks.go.scm.plugin.git.GitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.ModifiedFile;
 import com.thoughtworks.go.scm.plugin.model.Revision;
