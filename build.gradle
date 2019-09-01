@@ -75,3 +75,8 @@ task stopGoCd(type: Exec) {
     environment("VERSION", "$version")
     commandLine "docker-compose", "stop"
 }
+
+task githubRelease(dependsOn: build, type: Exec) {
+    environment("VERSION", "$version")
+    commandLine "./release.sh", "upload", "&&",  "./release.sh", "release"
+}
