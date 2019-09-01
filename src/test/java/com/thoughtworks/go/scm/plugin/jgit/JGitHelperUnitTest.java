@@ -38,7 +38,7 @@ import static org.mockito.Mockito.*;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Git.class)
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*"})
-public class JGitHelperTest {
+public class JGitHelperUnitTest {
 
     private static final Path TEST_REPO = Paths.get(System.getProperty("java.io.tmpdir"), "test_repo");
     private RevCommit initialCommit;
