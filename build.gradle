@@ -67,7 +67,7 @@ task startGoCd(dependsOn: build, type: Exec) {
 
 task restartGoCd(dependsOn: build, type: Exec) {
     environment("VERSION", "$version")
-    commandLine "docker-compose ", " restart "
+    commandLine "docker-compose", "restart"
 }
 
 task stopGoCd(type: Exec) {
