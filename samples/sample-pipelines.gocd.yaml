@@ -48,7 +48,7 @@ pipelines:
   animation-and-action-movies:
     group: movies
     materials:
-      animation:
+      animation-and-action:
         plugin_configuration:
           id: git-path
         options:
