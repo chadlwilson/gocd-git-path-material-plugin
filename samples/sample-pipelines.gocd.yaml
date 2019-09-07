@@ -45,6 +45,22 @@ pipelines:
             build:
               tasks:
                 - script: ./run.sh animation
+  animation-and-action-movies:
+    group: movies
+    materials:
+      animation:
+        plugin_configuration:
+          id: git-path
+        options:
+          url: https://github.com/chadlwilson/gocd-git-path-sample.git
+          path: animation, action
+    stages:
+      - build:
+          jobs:
+            build:
+              tasks:
+                - script: ./run.sh animation
+                - script: ./run.sh action
   both:
     group: movies
     materials:
@@ -56,6 +72,9 @@ pipelines:
         stage: build
       animation:
         pipeline: animation-movies
+        stage: build
+      animation-and-action-movies:
+        pipeline: animation-and-action-movies
         stage: build
       integration:
         plugin_configuration:
