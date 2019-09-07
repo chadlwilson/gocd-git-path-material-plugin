@@ -19,6 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.File;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
@@ -77,19 +78,19 @@ public class GetLatestRevisionRequestHandlerTest {
         Revision revision = new Revision("1", new Date(), "comment", "user", "blah@blah.com", Collections.emptyList());
         RequestHandler checkoutRequestHandler = new GetLatestRevisionRequestHandler();
         ArgumentCaptor<Map> responseArgumentCaptor = ArgumentCaptor.forClass(Map.class);
-        final String path = "path1, path2";
+        final String paths = "path1, path2";
 
-        Map<String, String> configuration = Map.of("path", path);
+        Map<String, String> configuration = Map.of("path", paths);
 
         when(JsonUtils.renderSuccessApiResponse(responseArgumentCaptor.capture())).thenReturn(mock(GoPluginApiResponse.class));
         when(JsonUtils.parseScmConfiguration(pluginApiRequestMock)).thenReturn(configuration);
         when(gitConfigMock.getUrl()).thenReturn("https://github.com/TWChennai/gocd-git-path-material-plugin.git");
-        when(jGitHelperMock.getLatestRevision(path)).thenReturn(revision);
+        when(jGitHelperMock.getLatestRevision(any())).thenReturn(revision);
 
         checkoutRequestHandler.handle(pluginApiRequestMock);
 
         verify(jGitHelperMock).cloneOrFetch();
-        verify(jGitHelperMock).getLatestRevision(path);
+        verify(jGitHelperMock).getLatestRevision(List.of("path1", " path2"));
 
         Map<String, Object> responseMap = responseArgumentCaptor.getValue();
         assertThat(responseMap.size(), is(1));

@@ -12,6 +12,7 @@ import com.tw.go.plugin.model.Revision;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
@@ -38,9 +39,10 @@ public class GetLatestRevisionRequestHandler implements RequestHandler {
             GitHelper git = HelperFactory.git(gitConfig, flyweightFolder);
             git.cloneOrFetch();
             Map<String, String> configuration = JsonUtils.parseScmConfiguration(apiRequest);
-            final Revision revision = git.getLatestRevision(configuration.get("path"));
+            final List<String> paths = List.of(configuration.get("path").split(","));
+            final Revision revision = git.getLatestRevision(paths);
 
-            LOGGER.debug(String.format("Fetching latestRevision for path %s", configuration.get("path")));
+            LOGGER.debug(String.format("Fetching latestRevision for paths %s", paths));
 
             if (revision == null) {
                 return JsonUtils.renderSuccessApiResponse(null);
