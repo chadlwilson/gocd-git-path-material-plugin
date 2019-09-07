@@ -23,7 +23,7 @@ public class GitModificationParser {
     private static final Pattern DATE_PATTERN = Pattern.compile("^Date:" + SPACES + DATE + "$");
     private static final Pattern COMMENT_PATTERN = Pattern.compile("^" + COMMENT_INDENT + COMMENT_TEXT + "$");
 
-    private LinkedList<Revision> revisions = new LinkedList<>();
+    private final LinkedList<Revision> revisions = new LinkedList<>();
 
     public List<Revision> parse(List<String> output) {
         for (String line : output) {

@@ -1,4 +1,4 @@
-package com.thoughtworks.go.scm.plugin.git;
+package com.thoughtworks.go.scm.plugin;
 
 import com.thoughtworks.go.scm.plugin.cmd.InMemoryConsumer;
 import com.thoughtworks.go.scm.plugin.cmd.ProcessOutputStreamConsumer;
@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class GitHelper {
-    protected GitConfig gitConfig;
-    protected File workingDir;
-    protected ProcessOutputStreamConsumer stdOut;
-    protected ProcessOutputStreamConsumer stdErr;
+    protected final GitConfig gitConfig;
+    protected final File workingDir;
+    protected final ProcessOutputStreamConsumer stdOut;
+    protected final ProcessOutputStreamConsumer stdErr;
 
     public GitHelper(GitConfig gitConfig, File workingDir) {
-       this(gitConfig, workingDir, new ProcessOutputStreamConsumer(new InMemoryConsumer()), new ProcessOutputStreamConsumer(new InMemoryConsumer()));
+        this(gitConfig, workingDir, new ProcessOutputStreamConsumer(new InMemoryConsumer()), new ProcessOutputStreamConsumer(new InMemoryConsumer()));
     }
 
     public GitHelper(GitConfig gitConfig, File workingDir, ProcessOutputStreamConsumer stdOut, ProcessOutputStreamConsumer stdErr) {
@@ -64,7 +64,7 @@ public abstract class GitHelper {
         try {
             FileUtils.forceMkdir(workingDir);
         } catch (IOException e) {
-            new RuntimeException("Could not create directory: " + workingDir.getAbsolutePath());
+            throw new RuntimeException("Could not create directory: " + workingDir.getAbsolutePath());
         }
     }
 

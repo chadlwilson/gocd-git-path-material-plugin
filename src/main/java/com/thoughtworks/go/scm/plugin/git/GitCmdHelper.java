@@ -1,13 +1,12 @@
 package com.thoughtworks.go.scm.plugin.git;
 
+import com.thoughtworks.go.scm.plugin.GitHelper;
 import com.thoughtworks.go.scm.plugin.cmd.Console;
 import com.thoughtworks.go.scm.plugin.cmd.ConsoleResult;
 import com.thoughtworks.go.scm.plugin.cmd.InMemoryConsumer;
 import com.thoughtworks.go.scm.plugin.cmd.ProcessOutputStreamConsumer;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
-import com.thoughtworks.go.scm.plugin.util.DateUtils;
-import com.thoughtworks.go.scm.plugin.util.ListUtils;
 import com.thoughtworks.go.scm.plugin.util.StringUtils;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.io.FileUtils;
@@ -44,13 +43,13 @@ public class GitCmdHelper extends GitHelper {
 
     @Override
     public void cloneRepository() {
-        List<String> args = new ArrayList<String>(Arrays.asList("clone", String.format("--branch=%s", gitConfig.getEffectiveBranch())));
+        List<String> args = new ArrayList<>(Arrays.asList("clone", String.format("--branch=%s", gitConfig.getEffectiveBranch())));
         if (gitConfig.isShallowClone()) {
             args.add("--depth=1");
         }
         args.add(gitConfig.getEffectiveUrl());
         args.add(workingDir.getAbsolutePath());
-        CommandLine gitClone = Console.createCommand(ListUtils.toArray(args));
+        CommandLine gitClone = Console.createCommand(args.toArray(new String[0]));
         runAndGetOutput(gitClone, null, stdOut, stdErr);
     }
 
@@ -118,7 +117,7 @@ public class GitCmdHelper extends GitHelper {
     public Map<String, String> getBranchToRevisionMap(String pattern) {
         CommandLine gitCmd = Console.createCommand("show-ref");
         List<String> outputLines = runAndGetOutput(gitCmd).stdOut();
-        Map<String, String> branchToRevisionMap = new HashMap<String, String>();
+        Map<String, String> branchToRevisionMap = new HashMap<>();
         for (String line : outputLines) {
             if (line.contains(pattern)) {
                 String[] parts = line.split(" ");
@@ -154,7 +153,7 @@ public class GitCmdHelper extends GitHelper {
 
             Matcher m = matchResultLine(resultLine);
             if (!m.find()) {
-                throw new RuntimeException(String.format("Unable to parse git-diff-tree output line: %s\nFrom output:\n %s", resultLine, ListUtils.join(diffTreeOutput, "\n")));
+                throw new RuntimeException(String.format("Unable to parse git-diff-tree output line: %s%nFrom output:%n %s", resultLine, String.join(System.lineSeparator(), diffTreeOutput)));
             }
             revision.createModifiedFile(m.group(2), parseGitAction(m.group(1).charAt(0)));
         }
@@ -196,11 +195,11 @@ public class GitCmdHelper extends GitHelper {
     @Override
     public void fetch(String refSpec) {
         stdOut.consumeLine("[GIT] Fetching changes");
-        List<String> args = new ArrayList<String>(Arrays.asList("fetch", "origin"));
+        List<String> args = new ArrayList<>(Arrays.asList("fetch", "origin"));
         if (!StringUtils.isEmpty(refSpec)) {
             args.add(refSpec);
         }
-        CommandLine gitFetch = Console.createCommand(ListUtils.toArray(args));
+        CommandLine gitFetch = Console.createCommand(args.toArray(new String[0]));
         runOrBomb(gitFetch);
     }
 
@@ -237,17 +236,17 @@ public class GitCmdHelper extends GitHelper {
     @Override
     public Map<String, String> submoduleUrls() {
         CommandLine gitConfig = Console.createCommand("config", "--get-regexp", "^submodule\\..+\\.url");
-        List<String> submoduleList = new ArrayList<String>();
+        List<String> submoduleList = new ArrayList<>();
         try {
             submoduleList = runAndGetOutput(gitConfig).stdOut();
         } catch (Exception e) {
             // ignore
         }
-        Map<String, String> submoduleUrls = new HashMap<String, String>();
+        Map<String, String> submoduleUrls = new HashMap<>();
         for (String submoduleLine : submoduleList) {
             Matcher m = GIT_SUBMODULE_URL_PATTERN.matcher(submoduleLine);
             if (!m.find()) {
-                throw new RuntimeException(String.format("Unable to parse git-config output line: %s\nFrom output:\n%s", submoduleLine, ListUtils.join(submoduleList, "\n")));
+                throw new RuntimeException(String.format("Unable to parse git-config output line: %s%nFrom output:%n%s", submoduleLine, String.join(System.lineSeparator(), submoduleList)));
             }
             submoduleUrls.put(m.group(1), m.group(2));
         }
@@ -261,11 +260,11 @@ public class GitCmdHelper extends GitHelper {
     }
 
     private List<String> submoduleFolders(List<String> submoduleLines) {
-        List<String> submoduleFolders = new ArrayList<String>();
+        List<String> submoduleFolders = new ArrayList<>();
         for (String submoduleLine : submoduleLines) {
             Matcher m = GIT_SUBMODULE_STATUS_PATTERN.matcher(submoduleLine);
             if (!m.find()) {
-                throw new RuntimeException(String.format("Unable to parse git-submodule output line: %s\nFrom output:\n%s", submoduleLine, ListUtils.join(submoduleLines, "\n")));
+                throw new RuntimeException(String.format("Unable to parse git-submodule output line: %s%nFrom output:%n%s", submoduleLine, String.join(System.lineSeparator(), submoduleLines)));
             }
             submoduleFolders.add(m.group(1));
         }
@@ -333,10 +332,7 @@ public class GitCmdHelper extends GitHelper {
 
     @Override
     public void commitOnDate(String message, Date commitDate) {
-        Map<String, String> env = new HashMap<String, String>();
-        env.put("GIT_AUTHOR_DATE", DateUtils.formatRFC822(commitDate));
         CommandLine gitCmd = Console.createCommand("commit", "-m", message);
-        // TODO: set env.
         runOrBomb(gitCmd);
     }
 
@@ -390,8 +386,8 @@ public class GitCmdHelper extends GitHelper {
         runOrBomb(gitCommit);
     }
 
-    private ConsoleResult runOrBomb(CommandLine gitCmd) {
-        return runAndGetOutput(gitCmd, workingDir, stdOut, stdErr);
+    private void runOrBomb(CommandLine gitCmd) {
+        runAndGetOutput(gitCmd, workingDir, stdOut, stdErr);
     }
 
     private ConsoleResult runAndGetOutput(CommandLine gitCmd) {

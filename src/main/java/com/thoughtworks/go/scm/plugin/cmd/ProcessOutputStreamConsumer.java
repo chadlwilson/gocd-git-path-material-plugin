@@ -5,7 +5,7 @@ import org.apache.commons.exec.LogOutputStream;
 import java.util.List;
 
 public class ProcessOutputStreamConsumer extends LogOutputStream {
-    private StreamConsumer streamConsumer;
+    private final StreamConsumer streamConsumer;
 
     public ProcessOutputStreamConsumer(StreamConsumer streamConsumer) {
         this.streamConsumer = streamConsumer;

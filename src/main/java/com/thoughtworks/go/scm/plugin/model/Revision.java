@@ -18,7 +18,6 @@ public class Revision {
     private List<ModifiedFile> modifiedFiles;
     private boolean isMergeCommit;
 
-    private static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     public Revision(String revision, Date timestamp, String comment, String user, String emailId, List<ModifiedFile> modifiedFiles) {
         this.revision = revision;
@@ -39,23 +38,4 @@ public class Revision {
         return file;
     }
 
-    public Map<String, Object> getRevisionMap() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("revision", this.getRevision());
-        response.put("timestamp", new SimpleDateFormat(DATE_PATTERN).format(this.getTimestamp()));
-        response.put("user", this.getUser());
-        response.put("revisionComment", this.getComment());
-        List<Map> modifiedFilesMapList = new ArrayList<>();
-
-        if (!ListUtils.isEmpty(this.getModifiedFiles())) {
-            for (ModifiedFile modifiedFile : this.getModifiedFiles()) {
-                Map<String, String> modifiedFileMap = new HashMap<>();
-                modifiedFileMap.put("fileName", modifiedFile.getFileName());
-                modifiedFileMap.put("action", modifiedFile.getAction());
-                modifiedFilesMapList.add(modifiedFileMap);
-            }
-        }
-        response.put("modifiedFiles", modifiedFilesMapList);
-        return response;
-    }
 }

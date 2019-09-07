@@ -3,9 +3,9 @@ package com.thoughtworks.go.scm.plugin.cmd;
 import java.util.List;
 
 public class ConsoleResult {
-    private int exitCode;
-    private List<String> stdOut;
-    private List<String> stdErr;
+    private final int exitCode;
+    private final List<String> stdOut;
+    private final List<String> stdErr;
 
     public ConsoleResult(int exitCode, List<String> stdOut, List<String> stdErr) {
         this.exitCode = exitCode;

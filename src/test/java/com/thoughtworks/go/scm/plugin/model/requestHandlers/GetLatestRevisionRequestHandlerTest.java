@@ -2,8 +2,8 @@ package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import com.thoughtworks.go.scm.plugin.git.HelperFactory;
-import com.thoughtworks.go.scm.plugin.git.JGitHelper;
+import com.thoughtworks.go.scm.plugin.HelperFactory;
+import com.thoughtworks.go.scm.plugin.jgit.JGitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;

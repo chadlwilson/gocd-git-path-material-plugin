@@ -3,8 +3,8 @@ package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import com.thoughtworks.go.scm.plugin.git.GitHelper;
-import com.thoughtworks.go.scm.plugin.git.HelperFactory;
+import com.thoughtworks.go.scm.plugin.GitHelper;
+import com.thoughtworks.go.scm.plugin.HelperFactory;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;
@@ -45,7 +45,7 @@ public class GetLatestRevisionRequestHandler implements RequestHandler {
             if (revision == null) {
                 return JsonUtils.renderSuccessApiResponse(null);
             } else {
-                return JsonUtils.renderSuccessApiResponse(Map.of("revision", revision.getRevisionMap()));
+                return JsonUtils.renderSuccessApiResponse(Map.of("revision", RevisionUtil.toMap(revision)));
             }
         } catch (Throwable t) {
             LOGGER.error("get latest revision: ", t);
