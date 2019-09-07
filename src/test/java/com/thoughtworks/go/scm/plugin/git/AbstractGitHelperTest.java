@@ -1,5 +1,6 @@
 package com.thoughtworks.go.scm.plugin.git;
 
+import com.thoughtworks.go.scm.plugin.GitHelper;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.Revision;
 import org.apache.commons.io.FileUtils;
