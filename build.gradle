@@ -7,14 +7,14 @@ plugins {
 
 group 'com.thoughtworks.com'
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
 
 // these values that go into plugin.xml
 project.ext.pluginDesc = [
         id         : 'com.thoughtworks.gocd',
         version    : project.version,
-        goCdVersion: '19.7.0',
+        goCdVersion: '18.10.0',
         name       : 'Git Path Material',
         description: 'Git Path Material plugin for GoCD',
         vendorName : 'GoCd Contributors',
