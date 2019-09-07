@@ -3,10 +3,10 @@ package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.thoughtworks.go.scm.plugin.HelperFactory;
-import com.thoughtworks.go.scm.plugin.jgit.JGitHelper;
-import com.thoughtworks.go.scm.plugin.model.GitConfig;
-import com.thoughtworks.go.scm.plugin.model.Revision;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;
+import com.tw.go.plugin.jgit.JGitHelper;
+import com.tw.go.plugin.model.GitConfig;
+import com.tw.go.plugin.model.Revision;
 import org.eclipse.jgit.errors.TransportException;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.Map;
 
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -54,7 +54,7 @@ public class GetLatestRevisionRequestHandlerTest {
 
         when(pluginApiRequestMock.requestBody()).thenReturn(responseBody);
         when(JsonUtils.parseJSON(responseBody)).thenReturn(requestBody);
-        when(GitConfig.create(pluginApiRequestMock)).thenReturn(gitConfigMock);
+        when(JsonUtils.toGitConfig(pluginApiRequestMock)).thenReturn(gitConfigMock);
         when(HelperFactory.git(gitConfigMock, new File(flyWeightFolder))).thenReturn(jGitHelperMock);
     }
 

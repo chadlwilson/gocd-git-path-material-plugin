@@ -3,12 +3,12 @@ package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import com.thoughtworks.go.scm.plugin.GitHelper;
 import com.thoughtworks.go.scm.plugin.HelperFactory;
-import com.thoughtworks.go.scm.plugin.model.GitConfig;
-import com.thoughtworks.go.scm.plugin.model.Revision;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;
 import com.thoughtworks.go.scm.plugin.util.Validator;
+import com.tw.go.plugin.GitHelper;
+import com.tw.go.plugin.model.GitConfig;
+import com.tw.go.plugin.model.Revision;
 
 import java.io.File;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class GetLatestRevisionRequestHandler implements RequestHandler {
     @Override
     @SuppressWarnings("unchecked")
     public GoPluginApiResponse handle(GoPluginApiRequest apiRequest) {
-        GitConfig gitConfig = GitConfig.create(apiRequest);
+        GitConfig gitConfig = JsonUtils.toGitConfig(apiRequest);
         Map<String, Object> responseMap = (Map<String, Object>) JsonUtils.parseJSON(apiRequest.requestBody());
         File flyweightFolder = new File((String) responseMap.get("flyweight-folder"));
 

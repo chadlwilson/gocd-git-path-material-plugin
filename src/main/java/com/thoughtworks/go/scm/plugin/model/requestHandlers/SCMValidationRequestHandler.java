@@ -3,9 +3,9 @@ package com.thoughtworks.go.scm.plugin.model.requestHandlers;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.thoughtworks.go.scm.plugin.FieldValidator;
-import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.util.JsonUtils;
 import com.thoughtworks.go.scm.plugin.util.Validator;
+import com.tw.go.plugin.model.GitConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class SCMValidationRequestHandler implements RequestHandler {
     @Override
     public GoPluginApiResponse handle(GoPluginApiRequest apiRequest) {
-        final GitConfig gitConfig = GitConfig.create(apiRequest);
+        final GitConfig gitConfig = JsonUtils.toGitConfig(apiRequest);
         List<Map<String, Object>> response = new ArrayList<>();
 
         validate(response, fieldValidation -> Validator.validateUrl(gitConfig, fieldValidation));

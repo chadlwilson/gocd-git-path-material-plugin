@@ -1,15 +1,14 @@
 package com.thoughtworks.go.scm.plugin.git;
 
-import com.thoughtworks.go.scm.plugin.GitHelper;
-import com.thoughtworks.go.scm.plugin.jgit.JGitHelper;
-import com.thoughtworks.go.scm.plugin.model.GitConfig;
-import com.thoughtworks.go.scm.plugin.model.Revision;
+import com.tw.go.plugin.GitHelper;
+import com.tw.go.plugin.jgit.JGitHelper;
+import com.tw.go.plugin.model.GitConfig;
+import com.tw.go.plugin.model.Revision;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.ConfigConstants;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -30,8 +29,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
@@ -43,21 +42,26 @@ public class JGitHelperUnitTest {
 
     private static final Path TEST_REPO = Paths.get(System.getProperty("java.io.tmpdir"), "test_repo");
     private RevCommit initialCommit;
-    private String destinationFolder;
+    private File destinationFolder;
     private GitConfig gitConfig;
+
+    public static JGitHelper create(GitConfig gitConfig, String destinationFolder) {
+        File workingDirectory = destinationFolder == null ? null : new File(destinationFolder);
+        return new JGitHelper(gitConfig, workingDirectory);
+    }
 
     @Before
     public void before() throws IOException, GitAPIException {
         FileUtils.deleteDirectory(TEST_REPO.toFile());
         Files.createDirectory(TEST_REPO);
         initialCommit = addContentAndCommit(TEST_REPO, "Initial commit");
-        destinationFolder = TEST_REPO.toAbsolutePath().toString();
+        destinationFolder = TEST_REPO.toAbsolutePath().toFile();
         gitConfig = new GitConfig("http://url.test", "username", "password", "master");
     }
 
     @Test
-    public void shouldGetLatestRevision() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+    public void shouldGetLatestRevision() {
+        GitHelper helper = new JGitHelper(gitConfig, destinationFolder);
 
         Revision latestRevision = helper.getLatestRevision();
 
@@ -66,7 +70,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldGetLatestRevisionForGivenPath() throws Exception {
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
 
@@ -80,7 +84,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldGetLatestRevisionForGivenCommaSeparatedPath() throws Exception {
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
 
@@ -93,7 +97,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldGetAllRevisions() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        GitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         RevCommit commit2 = addContentAndCommit(TEST_REPO, "Another commit.");
 
         List<Revision> revisions = helper.getAllRevisions();
@@ -105,7 +109,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldGetRevisionsSince() throws Exception {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        GitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         RevCommit commit2 = addContentAndCommit(TEST_REPO, "Another commit.");
 
         List<Revision> revisions = helper.getRevisionsSince(initialCommit.getName());
@@ -116,7 +120,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldGetRevisionsSinceForGivenPath() throws Exception {
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
         RevCommit service1Commit = addContentAndCommit(getFilePath(service1), "Service 1 commit");
@@ -135,7 +139,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldGetRevisionsSinceForCommaSeparatedGivenPath() throws Exception {
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         String service1 = "service1";
         String service2 = "service2";
         RevCommit service1Commit = addContentAndCommit(getFilePath(service1), "Service 1 commit");
@@ -150,7 +154,7 @@ public class JGitHelperUnitTest {
 
     @Test
     public void shouldCheckConnection() throws GitAPIException {
-        GitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        GitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         LsRemoteCommand remoteCommand = mock(LsRemoteCommand.class);
         ArgumentCaptor<CredentialsProvider> credentialsProviderArgumentCaptor = ArgumentCaptor.forClass(CredentialsProvider.class);
         CredentialItem.Username username = new CredentialItem.Username();
@@ -178,7 +182,7 @@ public class JGitHelperUnitTest {
     @Test
     public void checkConnectionShouldNotProvideCredentialForNonRemoteUrl() throws GitAPIException {
         GitConfig gitConfig = new GitConfig("git@github.com:gocd/gocd-docker.git", "username", "password", "master");
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         LsRemoteCommand remoteCommandMock = mock(LsRemoteCommand.class);
         ArgumentCaptor<CredentialsProvider> credentialsProviderArgumentCaptor = ArgumentCaptor.forClass(CredentialsProvider.class);
 
@@ -199,7 +203,7 @@ public class JGitHelperUnitTest {
     @Test
     public void checkConnectionShouldNotProvideCredentialWhenCredentialsAreNotProvided() throws GitAPIException {
         GitConfig gitConfig = new GitConfig("git@github.com:gocd/gocd-docker.git", "", "", "master");
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         LsRemoteCommand remoteCommandMock = mock(LsRemoteCommand.class);
         ArgumentCaptor<CredentialsProvider> credentialsProviderArgumentCaptor = ArgumentCaptor.forClass(CredentialsProvider.class);
 
@@ -217,8 +221,8 @@ public class JGitHelperUnitTest {
     }
 
     @Test
-    public void shouldCloneRepository() throws GitAPIException {
-        JGitHelper helper = JGitHelper.create(gitConfig, destinationFolder);
+    public void shouldCloneRepository() {
+        JGitHelper helper = new JGitHelper(gitConfig, destinationFolder);
         CloneCommand cloneCommandMock = mock(CloneCommand.class);
         ArgumentCaptor<File> fileArgumentCaptor = ArgumentCaptor.forClass(File.class);
 
@@ -234,7 +238,7 @@ public class JGitHelperUnitTest {
         verify(cloneCommandMock).setDirectory(fileArgumentCaptor.capture());
         verify(cloneCommandMock).setBranch(gitConfig.getEffectiveBranch());
 
-        assertThat(fileArgumentCaptor.getValue().getPath(), is(equalTo(destinationFolder)));
+        assertThat(fileArgumentCaptor.getValue().getPath(), is(equalTo(destinationFolder.getPath())));
     }
 
     private Path getFilePath(String service1) {
@@ -248,18 +252,8 @@ public class JGitHelperUnitTest {
 
     private RevCommit commit(String msg) throws GitAPIException {
         Git repo = Git.init().setDirectory(TEST_REPO.toFile()).call();
-        disableGpg(repo);
         repo.add().addFilepattern(".").call();
-        return repo.commit().setMessage(msg).call();
-    }
-
-    private void disableGpg(Git repo) {
-        // In case user has it enabled globally
-        repo.getRepository()
-                .getConfig()
-                .setBoolean(
-                        ConfigConstants.CONFIG_COMMIT_SECTION, null,
-                        ConfigConstants.CONFIG_KEY_GPGSIGN, false);
+        return repo.commit().setSign(false).setMessage(msg).call();
     }
 
     private void addContent(Path path) throws IOException {
