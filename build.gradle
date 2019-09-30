@@ -18,7 +18,7 @@ project.ext.pluginDesc = [
         name       : 'Git Path Material',
         description: 'Git Path Material plugin for GoCD',
         vendorName : 'GoCd Contributors',
-        vendorUrl  : 'https://github.com/TWChennai/gocd-git-path-material-plugin'
+        vendorUrl  : 'https://github.com/chadlwilson/gocd-git-path-material-plugin'
 ]
 
 repositories {
@@ -40,7 +40,7 @@ check.dependsOn jacocoTestReport
 dependencies {
     implementation "cd.go.plugin:go-plugin-api:${project.pluginDesc.goCdVersion}"
 
-    implementation 'in.ashwanthkumar:git-cmd:2.0-SNAPSHOT'
+    implementation 'in.ashwanthkumar:git-cmd:2.0.0-rc0'
     implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     implementation 'org.apache.commons:commons-lang3:3.9'
 
