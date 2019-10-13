@@ -8,6 +8,7 @@ pipelines:
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: action
+          shallow_clone: true
     stages:
       - build:
           jobs:
@@ -54,6 +55,7 @@ pipelines:
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: animation, action
+          shallow_clone: true
     stages:
       - build:
           jobs:
@@ -82,6 +84,7 @@ pipelines:
         options:
           url: https://github.com/TWChennai/gocd-git-path-sample.git
           path: integration
+          shallow_clone: true
     stages:
       - build:
           jobs:
