@@ -25,21 +25,21 @@ echo "GitHub [${1}] of version ${version}"
 case "$1" in
   release)
     ${GIT_HUB_RELEASE_BIN} release \
-      --user chadlwilson \
+      --user ${GITHUB_USER} \
       --repo gocd-git-path-material-plugin \
       --tag ${version} \
       --name ${version} \
       --pre-release;;
   upload)
     ${GIT_HUB_RELEASE_BIN} upload \
-      --user chadlwilson \
+      --user ${GITHUB_USER} \
       --repo gocd-git-path-material-plugin \
       --tag ${version} \
       --name "gocd-git-path-material-plugin-$version.jar" \
       --file build/libs/gocd-git-path-material-plugin-${version}.jar;;
   delete)
     ${GIT_HUB_RELEASE_BIN} delete \
-      --user chadlwilson \
+      --user ${GITHUB_USER} \
       --repo gocd-git-path-material-plugin \
       --tag ${version};;
   *)
