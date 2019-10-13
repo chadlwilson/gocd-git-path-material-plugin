@@ -90,7 +90,11 @@ public class JsonUtils {
 
     public static GitConfig toGitConfig(GoPluginApiRequest apiRequest) {
         Map<String, String> configuration = parseScmConfiguration(apiRequest);
-        return new GitConfig(configuration.get("url"), configuration.get("username"), configuration.get("password"), configuration.get("branch"));
+        return new GitConfig(
+                StringUtils.trim(configuration.get("url")),
+                StringUtils.trim(configuration.get("username")),
+                StringUtils.trim(configuration.get("password")),
+                StringUtils.trim(configuration.get("branch")));
     }
 
     public static GitConfig toServerSideGitConfig(GoPluginApiRequest apiRequest) {
