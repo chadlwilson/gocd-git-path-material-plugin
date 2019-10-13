@@ -3,6 +3,7 @@ package com.thoughtworks.go.scm.plugin.util;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.thoughtworks.go.scm.plugin.model.requestHandlers.SCMConfigurationRequestHandler;
 import com.tw.go.plugin.model.GitConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -91,10 +92,12 @@ public class JsonUtils {
     public static GitConfig toGitConfig(GoPluginApiRequest apiRequest) {
         Map<String, String> configuration = parseScmConfiguration(apiRequest);
         return new GitConfig(
-                StringUtils.trim(configuration.get("url")),
-                StringUtils.trim(configuration.get("username")),
-                StringUtils.trim(configuration.get("password")),
-                StringUtils.trim(configuration.get("branch")));
+                StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_URL)),
+                StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_USERNAME)),
+                StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_PASSWORD)),
+                StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_BRANCH)),
+                false,
+                "true".equalsIgnoreCase(StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_SHALLOW_CLONE))));
     }
 
     public static GitConfig toServerSideGitConfig(GoPluginApiRequest apiRequest) {
@@ -104,7 +107,7 @@ public class JsonUtils {
     }
 
     public static List<String> getPaths(GoPluginApiRequest apiRequest) {
-        return splitPaths(parseScmConfiguration(apiRequest).get("path"));
+        return splitPaths(parseScmConfiguration(apiRequest).get(SCMConfigurationRequestHandler.CONFIG_PATHS));
     }
 
     static List<String> splitPaths(String paths) {
