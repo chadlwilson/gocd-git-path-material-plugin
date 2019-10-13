@@ -24,7 +24,7 @@ public class SCMConfigurationRequestHandler implements RequestHandler {
         response.put(CONFIG_PASSWORD, createField("Password", null, true, false, true, "2"));
         response.put(CONFIG_PATHS, createField("Monitored Paths", null, true, true, false, "3"));
         response.put(CONFIG_BRANCH, createField("Branch", "master", true, false, false, "4"));
-        response.put(CONFIG_SHALLOW_CLONE, createField("Shallow Clone", null, false, false, false, "5"));
+        response.put(CONFIG_SHALLOW_CLONE, createField("Shallow Clone", "false", false, false, false, "5"));
         return JsonUtils.renderSuccessApiResponse(response);
     }
 
