@@ -2,15 +2,16 @@ version: '3.7'
 
 services:
   agent:
-    image: gocd/gocd-agent-alpine-3.10:v19.7.0
+    image: gocd/gocd-agent-alpine-3.10:v19.9.0
     depends_on:
       - server
     environment:
       GO_SERVER_URL: http://server:8153/go
       AGENT_AUTO_REGISTER_KEY: 079e578b-87cc-46c9-9ab5-88997fc7ac59
+#      GIT_TRACE: 1
 
   server:
-    image: gocd/gocd-server:v19.7.0
+    image: gocd/gocd-server:v19.9.0
     depends_on:
       - plugin-server
     environment:
