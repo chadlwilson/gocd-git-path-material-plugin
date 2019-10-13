@@ -40,7 +40,7 @@ check.dependsOn jacocoTestReport
 dependencies {
     implementation "cd.go.plugin:go-plugin-api:${project.pluginDesc.goCdVersion}"
 
-    implementation 'in.ashwanthkumar:git-cmd:2.0.0-rc0'
+    implementation 'in.ashwanthkumar:git-cmd:2.0.0-rc1'
     implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     implementation 'org.apache.commons:commons-lang3:3.9'
 
