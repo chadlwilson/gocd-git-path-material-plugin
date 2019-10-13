@@ -8,6 +8,7 @@ pipelines:
         options:
           url: https://github.com/chadlwilson/gocd-git-path-sample.git
           path: action
+          shallow_clone: true
     stages:
       - build:
           jobs:
