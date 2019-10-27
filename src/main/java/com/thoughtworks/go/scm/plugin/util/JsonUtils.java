@@ -5,6 +5,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.thoughtworks.go.scm.plugin.model.requestHandlers.SCMConfigurationRequestHandler;
 import com.tw.go.plugin.model.GitConfig;
+import com.tw.go.plugin.model.ShallowClone;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -89,19 +90,26 @@ public class JsonUtils {
         };
     }
 
-    public static GitConfig toGitConfig(GoPluginApiRequest apiRequest) {
-        Map<String, String> configuration = parseScmConfiguration(apiRequest);
+    private static GitConfig toBaseGitConfig(Map<String, String> configuration) {
         return new GitConfig(
                 StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_URL)),
                 StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_USERNAME)),
                 StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_PASSWORD)),
-                StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_BRANCH)),
-                false,
-                "true".equalsIgnoreCase(StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_SHALLOW_CLONE))));
+                StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_BRANCH)));
+    }
+
+    public static GitConfig toAgentGitConfig(GoPluginApiRequest apiRequest) {
+        Map<String, String> configuration = parseScmConfiguration(apiRequest);
+        GitConfig config = toBaseGitConfig(configuration);
+
+        if ("true".equalsIgnoreCase(StringUtils.trim(configuration.get(SCMConfigurationRequestHandler.CONFIG_SHALLOW_CLONE)))) {
+            config.setShallowClone(new ShallowClone());
+        }
+        return config;
     }
 
     public static GitConfig toServerSideGitConfig(GoPluginApiRequest apiRequest) {
-        GitConfig config = toGitConfig(apiRequest);
+        GitConfig config = toBaseGitConfig(parseScmConfiguration(apiRequest));
         config.setNoCheckout(true);
         return config;
     }

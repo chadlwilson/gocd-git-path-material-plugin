@@ -70,13 +70,13 @@ public class JsonUtilsTests {
                 "password", new ConfigurationItem("pass")
         );
 
-        GitConfig config = JsonUtils.toGitConfig(mockApiRequestFor(configurationMap));
+        GitConfig config = JsonUtils.toAgentGitConfig(mockApiRequestFor(configurationMap));
 
         assertThat(config.getUrl(), is("http://localhost.com"));
         assertThat(config.getUsername(), is("user"));
         assertThat(config.getPassword(), is("pass"));
         assertThat(config.getEffectiveBranch(), is("master"));
-        assertThat(config.isRecursiveSubModuleUpdate(), is(false));
+        assertThat(config.isRecursiveSubModuleUpdate(), is(true));
         assertThat(config.isShallowClone(), is(false));
     }
 
@@ -89,13 +89,13 @@ public class JsonUtilsTests {
                 "shallow_clone", new ConfigurationItem("true")
         );
 
-        GitConfig config = JsonUtils.toGitConfig(mockApiRequestFor(configurationMap));
+        GitConfig config = JsonUtils.toAgentGitConfig(mockApiRequestFor(configurationMap));
 
         assertThat(config.getUrl(), is("http://localhost.com"));
         assertThat(config.getUsername(), is("user"));
         assertThat(config.getPassword(), is("pass"));
         assertThat(config.getEffectiveBranch(), is("master"));
-        assertThat(config.isRecursiveSubModuleUpdate(), is(false));
+        assertThat(config.isRecursiveSubModuleUpdate(), is(true));
         assertThat(config.isShallowClone(), is(true));
     }
 
