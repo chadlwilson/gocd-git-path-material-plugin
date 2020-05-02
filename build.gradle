@@ -14,7 +14,7 @@ targetCompatibility = 1.9
 
 gocdPlugin {
     id = 'git-path'
-    pluginVersion = '2.0.0'
+    pluginVersion = '2.0.1'
     goCdVersion = '18.10.0'
     name = 'Git Path Material Plugin'
     description = 'Plugin that polls a Git repository and triggers pipelines based on sub-directory path matches'
