@@ -8,6 +8,7 @@ public class RequestHandlerFactory {
     private static final String REQUEST_LATEST_REVISION = "latest-revision";
     private static final String REQUEST_LATEST_REVISIONS_SINCE = "latest-revisions-since";
     private static final String REQUEST_CHECKOUT = "checkout";
+    private static final String REQUEST_GET_PLUGIN_ICON = "get-icon";
 
     public static RequestHandler create(String requestName) {
         switch (requestName) {
@@ -25,6 +26,8 @@ public class RequestHandlerFactory {
                 return new LatestRevisionSinceRequestHandler();
             case REQUEST_CHECKOUT:
                 return new CheckoutRequestHandler();
+            case REQUEST_GET_PLUGIN_ICON:
+                return new PluginIconRequestHandler();
             default:
                 return new UnknownRequestHandler();
         }
